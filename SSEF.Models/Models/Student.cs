@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -33,6 +34,6 @@ namespace SSEF.Models.Models
             }
         }
 
-
+        public virtual ICollection<Enrollment> Enrollments { get; set; }
     }
 }
