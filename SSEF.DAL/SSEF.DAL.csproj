@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UniversityDbContext.cs" />
+    <Compile Include="UniversityDbInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SSEF.Models\SSEF.Models.csproj">
