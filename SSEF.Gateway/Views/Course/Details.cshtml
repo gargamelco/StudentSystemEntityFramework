@@ -30,6 +30,9 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CourseID }) |
+@if (Request.IsAuthenticated && User.Identity.Name == "dinkov.com@gmail.com")
+{
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CourseID }) 
+} |
     @Html.ActionLink("Back to List", "Index")
 </p>

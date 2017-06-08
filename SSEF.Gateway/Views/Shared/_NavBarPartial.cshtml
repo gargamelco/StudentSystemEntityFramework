@@ -1,0 +1,32 @@
+﻿<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                @Html.ActionLink("University System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </button>
+            <a class="navbar-brand" href="Home/Index">
+                <h1>University System</h1>
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+            <ul class="nav navbar-nav">
+                @Html.Partial("_LoginPartial")
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                <li>@Html.ActionLink("Enrolled Students", "About", "Home")</li>
+                @if (Request.IsAuthenticated)
+                {
+                    <li>@Html.ActionLink("Student Info", "Index", "Students")</li>
+                }
+                <li>@Html.ActionLink("Courses", "Index", "Course")</li>
+                <li>@Html.ActionLink("Instructors", "Index", "Instructor")</li>
+                @if (Request.IsAuthenticated && User.Identity.Name == "dinkov.com@gmail.com")
+                {
+                    <li>@Html.ActionLink("Admin Panel", "Index", "Admin")</li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+

@@ -1,20 +1,24 @@
 ﻿@model SSEF.Gateway.Models.Common.InstructorIndexData
 
 @{
-    ViewBag.Title = "Instructor";
+    ViewBag.Title = "Instructors";
 }
 
 <h2>Instructors</h2>
 
+@if (Request.IsAuthenticated && User.Identity.Name == "dinkov.com@gmail.com")
+{
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+}
 <table class="table">
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Hire Date</th>
         <th>Office</th>
+        <th>Options:</th>
     </tr>
     @foreach (var item in Model.Instructors)
     {
@@ -41,9 +45,14 @@
             </td>
             <td>
                 @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Select", "Index", new { id = item.ID }) |
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @if (Request.IsAuthenticated)
+                {
+                @Html.ActionLink("Select", "Index", new { id = item.ID }) } |
+                @if (Request.IsAuthenticated && User.Identity.Name == "dinkov.com@gmail.com")
+                {
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) 
                 @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                }
             </td>
         </tr>
     }

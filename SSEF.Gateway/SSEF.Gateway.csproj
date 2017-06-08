@@ -193,8 +193,33 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\animate.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\default.css" />
+    <Content Include="Content\css\style.css" />
+    <Content Include="Content\img\bg1.jpg" />
+    <Content Include="Content\img\bg22.jpg" />
+    <Content Include="Content\img\icons\button-icons.png" />
+    <Content Include="Content\img\icons\grid-menu-icons.png" />
+    <Content Include="Content\img\icons\menu-icons.png" />
+    <Content Include="Content\img\icons\menu-icons2.png" />
+    <Content Include="Content\img\icons\search.png" />
+    <Content Include="Content\img\icons\search2.png" />
+    <Content Include="Content\img\icons\service-icon-1.png" />
+    <Content Include="Content\img\icons\service-icon-2.png" />
+    <Content Include="Content\img\icons\service-icon-3.png" />
+    <Content Include="Content\img\icons\service-icon-4.png" />
+    <Content Include="Content\img\icons\social-icons2.png" />
+    <Content Include="Content\img\icons\weather-icons.png" />
+    <Content Include="Content\img\icons\weather-main.png" />
+    <Content Include="Content\img\loader.gif" />
+    <Content Include="Content\img\spinner.gif" />
+    <Content Include="Content\img\team\1.png" />
+    <Content Include="Content\img\team\2.png" />
+    <Content Include="Content\img\team\3.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\font-awesome\css\font-awesome.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -268,6 +293,12 @@
     <Content Include="Views\Students\Details.cshtml" />
     <Content Include="Views\Students\Edit.cshtml" />
     <Content Include="Views\Students\Index.cshtml" />
+    <Content Include="Views\Shared\_HeaderPartial.cshtml" />
+    <Content Include="Views\Shared\_NavBarPartial.cshtml" />
+    <Content Include="Views\Shared\_IntroPartial.cshtml" />
+    <Content Include="Views\Shared\_FeaturesPartial.cshtml" />
+    <Content Include="Views\Shared\_ServicesPartial.cshtml" />
+    <Content Include="Views\Shared\_FooterPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
