@@ -22,6 +22,5 @@ namespace SSEF.DbContext
         {
             return new ApplicationDbContext();
         }
-
     }
 }
