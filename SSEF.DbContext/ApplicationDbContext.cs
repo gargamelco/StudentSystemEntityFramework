@@ -1,6 +1,7 @@
 ﻿using SSEF.Models.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace SSEF.DbContext
 {
@@ -22,5 +23,6 @@ namespace SSEF.DbContext
         {
             return new ApplicationDbContext();
         }
+
     }
 }

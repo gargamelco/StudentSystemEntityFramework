@@ -6,15 +6,15 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SSEF.DAL;
 using SSEF.Models.Models;
 using SSEF.Gateway.Models.Common;
+using SSEF.DbContext;
 
 namespace SSEF.Gateway.Controllers
 {
     public class InstructorController : Controller
     {
-        private UniversityDbContext db = new UniversityDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Instructor
         public ActionResult Index(int? id, int? courseID)
@@ -68,6 +68,7 @@ namespace SSEF.Gateway.Controllers
         }
 
         // GET: Instructor/Create
+        [Authorize(Users = "dinkov.com@gmail.com")]
         public ActionResult Create()
         {
             ViewBag.ID = new SelectList(db.OfficeAssignments, "InstructorID", "Location");
@@ -77,6 +78,7 @@ namespace SSEF.Gateway.Controllers
         // POST: Instructor/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Users = "dinkov.com@gmail.com")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,FirstName,LastName,HireDate")] Instructors instructors)
@@ -93,6 +95,7 @@ namespace SSEF.Gateway.Controllers
         }
 
         // GET: Instructor/Edit/5
+        [Authorize(Users = "dinkov.com@gmail.com")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -111,6 +114,7 @@ namespace SSEF.Gateway.Controllers
         // POST: Instructor/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Users = "dinkov.com@gmail.com")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,HireDate")] Instructors instructors)
@@ -126,6 +130,7 @@ namespace SSEF.Gateway.Controllers
         }
 
         // GET: Instructor/Delete/5
+        [Authorize(Users = "dinkov.com@gmail.com")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

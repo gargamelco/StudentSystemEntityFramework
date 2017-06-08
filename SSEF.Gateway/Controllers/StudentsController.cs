@@ -6,15 +6,15 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SSEF.DAL;
 using SSEF.Models.Models;
 using PagedList;
+using SSEF.DbContext;
 
 namespace SSEF.Gateway.Controllers
 {
     public class StudentsController : Controller
     {
-        private UniversityDbContext db = new UniversityDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Students
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -34,7 +34,7 @@ namespace SSEF.Gateway.Controllers
 
             ViewBag.CurrentFilter = searchString;
             IQueryable<Student> students;
-            if (this.User.Identity.Name == "dj@dj.com")
+            if (this.User.Identity.Name == "dinkov.com@gmail.com")
             {
                 students = from s in db.Students
                            select s;
@@ -73,7 +73,7 @@ namespace SSEF.Gateway.Controllers
         }
 
         // GET: Students/Details/5
-        public ActionResult Details(string id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -88,6 +88,7 @@ namespace SSEF.Gateway.Controllers
         }
 
         // GET: Students/Create
+        [Authorize(Users = "dinkov.com@gmail.com")]
         public ActionResult Create()
         {
             return View();
@@ -96,22 +97,32 @@ namespace SSEF.Gateway.Controllers
         // POST: Students/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Users = "dinkov.com@gmail.com")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Email,FirstName,LastName,EnrollmentDate,Secret")] Student student)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Students.Add(student);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Students.Add(student);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DataException /* dex */)
+            {
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
             return View(student);
         }
 
         // GET: Students/Edit/5
-        public ActionResult Edit(string id)
+        [Authorize(Users = "dinkov.com@gmail.com")]
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -125,45 +136,74 @@ namespace SSEF.Gateway.Controllers
             return View(student);
         }
 
-        // POST: Students/Edit/5
+
+        // POST: Student/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Users = "dj@dj.com")]
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var studentToUpdate = db.Students.Find(id);
+            if (TryUpdateModel(studentToUpdate, "",
+               new string[] { "FirstName", "LastName", "EnrollmentDate" }))
+            {
+                try
+                {
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+                catch (DataException /* dex */)
+                {
+                    //Log the error (uncomment dex variable name and add a line here to write a log.
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                }
+            }
+            return View(studentToUpdate);
+        }
+
+        // GET: Student/Delete/5
+        [Authorize(Users = "dinkov.com@gmail.com")]
+        public ActionResult Delete(int? id, bool? saveChangesError = false)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
+            }
+            Student student = db.Students.Find(id);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+            return View(student);
+        }
+
+        // POST: Student/Delete/5
+        [Authorize(Users = "dinkov.com@gmail.com")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Email,FirstName,LastName,EnrollmentDate,Secret")] Student student)
+        public ActionResult Delete(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(student).State = EntityState.Modified;
+                Student student = db.Students.Find(id);
+                db.Students.Remove(student);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-            return View(student);
-        }
-
-        // GET: Students/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
+            catch (DataException/* dex */)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
             }
-            Student student = db.Students.Find(id);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-            return View(student);
-        }
-
-        // POST: Students/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
-        {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
             return RedirectToAction("Index");
         }
 

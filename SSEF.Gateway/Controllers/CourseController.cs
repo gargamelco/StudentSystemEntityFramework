@@ -6,20 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SSEF.DAL;
 using SSEF.Models.Models;
+using SSEF.DbContext;
 
 namespace SSEF.Gateway.Controllers
 {
     public class CourseController : Controller
     {
-        private UniversityDbContext db = new UniversityDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Course
         public ActionResult Index()
         {
-            var courses = db.Courses.Include(c => c.Department);
-            return View(courses.ToList());
+            return View(db.Courses.ToList());
         }
 
         // GET: Course/Details/5
@@ -38,9 +37,9 @@ namespace SSEF.Gateway.Controllers
         }
 
         // GET: Course/Create
+        [Authorize(Users = "dinkov.com@gmail.com")]
         public ActionResult Create()
         {
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name");
             return View();
         }
 
@@ -58,10 +57,10 @@ namespace SSEF.Gateway.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name", course.DepartmentID);
             return View(course);
         }
 
+        [Authorize(Users = "dinkov.com@gmail.com")]
         // GET: Course/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -74,13 +73,13 @@ namespace SSEF.Gateway.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name", course.DepartmentID);
             return View(course);
         }
 
         // POST: Course/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Users = "dinkov.com@gmail.com")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CourseID,Title,Credits,DepartmentID")] Course course)
@@ -91,11 +90,11 @@ namespace SSEF.Gateway.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name", course.DepartmentID);
             return View(course);
         }
 
         // GET: Course/Delete/5
+        [Authorize(Users = "dinkov.com@gmail.com")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -111,6 +110,7 @@ namespace SSEF.Gateway.Controllers
         }
 
         // POST: Course/Delete/5
+        [Authorize(Users = "dinkov.com@gmail.com")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
